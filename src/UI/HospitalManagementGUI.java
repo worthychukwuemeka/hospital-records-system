@@ -8,9 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class HospitalManagementGUI extends JFrame {
-    private JComboBox<String> userTypeComboBox;
+    private final JComboBox<String> userTypeComboBox;
 
-    private JPanel patientLoginPanel;
+    private final JPanel patientLoginPanel;
     private JLabel patientNameLabel;
     private JLabel patientPasswordLabel;
     private JTextField patientNameField;
@@ -26,36 +26,38 @@ public class HospitalManagementGUI extends JFrame {
     private JComboBox<String> workerRoleComboBox;
     private JButton workerLoginButton;
 
+    private String selectedRole;
+
     private Map<String, String> patientCredentials;
     private Map<String, String> workerCredentials;
 
+    public String getSelectedRole () {
+        return selectedRole;
+    }
+
     public HospitalManagementGUI() {
-        // Set up the JFrame
         setTitle("Hospital Management System");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 300);
         setLocationRelativeTo(null);
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
-        // Set page background color
-        getContentPane().setBackground(new Color(250, 128, 114)); // Salmon color
+        getContentPane().setBackground(new Color(250, 128, 114)); // The colour I used for the content box's background is Salmon
 
-        // Create header panel
         JPanel headerPanel = new JPanel();
-        headerPanel.setBackground(new Color(250, 128, 114)); // Salmon color
+        headerPanel.setBackground(new Color(250, 128, 114)); // The colour I used for the header background is Salmon
 
         JLabel headerLabel = new JLabel("<html><div style='text-align: center;'>Welcome to the hospital management system!<br>Please select your role to access your login page:</div></html>");
         headerLabel.setForeground(Color.WHITE);
         headerPanel.add(headerLabel);
 
-        // Create the user type selection dropdown
         userTypeComboBox = new JComboBox<>(new String[]{"Patient", "Worker"});
         userTypeComboBox.setAlignmentX(Component.CENTER_ALIGNMENT);
-        userTypeComboBox.setMaximumSize(new Dimension(200, 20)); // Set maximum size for height
-        userTypeComboBox.setPreferredSize(new Dimension(200, 20)); // Set preferred size for height
-        userTypeComboBox.setMinimumSize(new Dimension(200, 20)); // Set minimum size for height
+        userTypeComboBox.setMaximumSize(new Dimension(200, 20)); // This is the window's maximum height
+        userTypeComboBox.setPreferredSize(new Dimension(200, 20)); // Added this as the window's preferred size for height
+        userTypeComboBox.setMinimumSize(new Dimension(200, 20)); // This is the window's minimum size for height
 
-        // Create the patient login panel
+
         patientLoginPanel = new JPanel();
         patientLoginPanel.setLayout(new BoxLayout(patientLoginPanel, BoxLayout.Y_AXIS));
         patientNameLabel = new JLabel("Full Name:");
@@ -71,7 +73,7 @@ public class HospitalManagementGUI extends JFrame {
         patientLoginButton = new JButton("Login");
         patientLoginPanel.add(patientLoginButton);
 
-        // Create the worker login panel
+
         workerLoginPanel = new JPanel();
         workerLoginPanel.setLayout(new BoxLayout(workerLoginPanel, BoxLayout.Y_AXIS));
         workerIdLabel = new JLabel("Worker ID:");
@@ -92,7 +94,6 @@ public class HospitalManagementGUI extends JFrame {
         workerLoginButton = new JButton("Login");
         workerLoginPanel.add(workerLoginButton);
 
-        // Add action listener to the user type selection dropdown
         userTypeComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -109,7 +110,7 @@ public class HospitalManagementGUI extends JFrame {
             }
         });
 
-        // Add action listener to the patient login button
+        // Action listener for the patient login button
         patientLoginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -118,13 +119,21 @@ public class HospitalManagementGUI extends JFrame {
 
                 if (validatePatientLogin(fullName, password)) {
                     JOptionPane.showMessageDialog(null, "Welcome back, " + fullName + "!");
+
+                    // PatientWindowGUI open
+                    SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            new PatientWindowGUI(fullName);
+                        }
+                    });
                 } else {
                     JOptionPane.showMessageDialog(null, "Invalid login credentials for patient.");
                 }
             }
         });
 
-        // Add action listener to the worker login button
+        // Action listener for the worker login button
         workerLoginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -135,30 +144,31 @@ public class HospitalManagementGUI extends JFrame {
                 if (validateWorkerLogin(workerId, password)) {
                     String fullName = getWorkerFullName(workerId);
                     JOptionPane.showMessageDialog(null, "Welcome back, " + role + " " + fullName + "!");
+
+                    WorkerOptionsGUI workerOptionsGUI = new WorkerOptionsGUI();
+                    workerOptionsGUI.setVisible(true);
                 } else {
                     JOptionPane.showMessageDialog(null, "Invalid login credentials for worker.");
                 }
             }
         });
-
-        // Initialize the credentials data
         initializeCredentials();
 
-        // Create a main panel to hold all the components
+
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        mainPanel.setBackground(new Color(250, 128, 114)); // Salmon color
+        mainPanel.setBackground(new Color(250, 128, 114)); 
         mainPanel.add(headerPanel);
-        mainPanel.add(Box.createVerticalStrut(20)); // Add vertical spacing
+        mainPanel.add(Box.createVerticalStrut(20));
         mainPanel.add(userTypeComboBox);
 
-        // Add the main panel to the main frame
+        // Main panel for the main frame
         add(mainPanel);
 
         setVisible(true);
     }
 
-    // Simulated validation methods
+    // Hospital Management GUI's validation methods
     private boolean validatePatientLogin(String fullName, String password) {
         // Validate patient login credentials
         String storedPassword = patientCredentials.get(fullName);
@@ -166,30 +176,29 @@ public class HospitalManagementGUI extends JFrame {
     }
 
     private boolean validateWorkerLogin(String workerId, String password) {
-        // Validate worker login credentials
+        // Here, the worker's login credentials will be validated
         String storedPassword = workerCredentials.get(workerId);
         return storedPassword != null && storedPassword.equals(password);
     }
 
     private String getWorkerFullName(String workerId) {
-        // Get worker full name based on worker ID
-        // Replace this with your own logic or data retrieval from a database
+        // This section helps get worker's full name based on worker ID
         if (workerId.equals("1001")) {
             return "John Smith";
         } else if (workerId.equals("1002")) {
             return "Jane Doe";
         } else if (workerId.equals("1003")) {
-            return "Michael Johnson";
+            return "Gbenga Johnson";
         } else if (workerId.equals("1004")) {
-            return "Emily Brown";
+            return "Whitney Adebayo";
         } else if (workerId.equals("1005")) {
-            return "David Wilson";
+            return "Catherine Olukanmi";
         }
         return "";
     }
 
     private void initializeCredentials() {
-        // Initialize the patient and worker credentials data
+        // This section is to initialize the patient and worker's credentials data
         patientCredentials = new HashMap<>();
         patientCredentials.put("Worthy Chukwuemeka", "password123");
         patientCredentials.put("Grace Emeka", "password456");
@@ -206,7 +215,6 @@ public class HospitalManagementGUI extends JFrame {
     }
 
     public static void main(String[] args) {
-        // Run the GUI on the Event Dispatch Thread
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
