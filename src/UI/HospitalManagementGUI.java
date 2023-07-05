@@ -212,13 +212,4 @@ public class HospitalManagementGUI extends JFrame {
         workerCredentials.put("1004", "password1004");
         workerCredentials.put("1005", "password1005");
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new HospitalManagementGUI();
-            }
-        });
-    }
 }

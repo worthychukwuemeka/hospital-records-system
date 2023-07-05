@@ -87,41 +87,38 @@ public class PatientWindowGUI extends JFrame {
                         // Create a new row with the form data
                         String[] rowData = {date, age, phoneNumber, email, complaint};
 
-                        String filePath = "C:\\Users\\worth\\IdeaProjects\\hospitalMgmt\\src\\appointments.csv";  // Replace with the actual file path
+                        String filePath = "C:\\Users\\worth\\IdeaProjects\\hospitalMgmt\\src\\appointments.csv";
 
                         try {
-                            // Create a FileWriter object with append mode
+                            // Created a FileWriter object with append mode
                             FileWriter csvWriter = new FileWriter(filePath, true);
 
-                            // Create a CSVWriter object
+                            // Created a CSVWriter object
                             CSVWriter writer = new CSVWriter(csvWriter);
 
-                            // Write the row to the CSV file
+                            // Wrote the row to the CSV file
                             writer.writeNext(rowData);
 
-                            // Close the writer
+                            // Closed the writer
                             writer.close();
 
-                            // Show a success message
+                            // Displayed a success message
                             JOptionPane.showMessageDialog(null, "Appointment submitted successfully!");
 
-                            // Clear the form inputs
+                            // Cleared the form inputs
                             dateField.setText("");
                             ageField.setText("");
                             phoneField.setText("");
                             emailField.setText("");
                             complaintArea.setText("");
                         } catch (IOException ex) {
-                            // Show an error message if there's an exception
+                            // Showed an error message if there's an exception
                             JOptionPane.showMessageDialog(null, "Failed to save appointment: " + ex.getMessage());
                         }
                     }
                 });
 
-
-
-
-                // Display the appointment form window
+                // Displayed the appointment form window
                 appointmentFormFrame.setVisible(true);
             }
         });
@@ -137,7 +134,7 @@ public class PatientWindowGUI extends JFrame {
         setVisible(true);
     }
 
-    // CSV file reader creation
+    // This is the part where I created the CSV file reader
     private void showPatientRecords()
     {
         String fileName = patientFullName.replaceAll("\\s+", "_") + "_records.csv";
