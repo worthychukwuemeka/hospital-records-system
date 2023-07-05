@@ -184,9 +184,9 @@ public class HospitalManagementGUI extends JFrame {
     private String getWorkerFullName(String workerId) {
         // This section helps get worker's full name based on worker ID
         if (workerId.equals("1001")) {
-            return "John Smith";
+            return "Jaiyeola Smith";
         } else if (workerId.equals("1002")) {
-            return "Jane Doe";
+            return "Feranmi Davies";
         } else if (workerId.equals("1003")) {
             return "Gbenga Johnson";
         } else if (workerId.equals("1004")) {
@@ -204,7 +204,7 @@ public class HospitalManagementGUI extends JFrame {
         patientCredentials.put("Grace Emeka", "password456");
         patientCredentials.put("Daniella Hope", "password789");
         patientCredentials.put("Samuel Gabriel", "password012");
-        patientCredentials.put("Michael Wilson", "password345");
+        patientCredentials.put("Michael Babatunde", "password345");
 
         workerCredentials = new HashMap<>();
         workerCredentials.put("1001", "password1001");

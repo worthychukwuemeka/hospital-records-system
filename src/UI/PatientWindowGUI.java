@@ -1,5 +1,7 @@
 package UI;
 
+import com.opencsv.CSVWriter;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -51,7 +53,7 @@ public class PatientWindowGUI extends JFrame {
                 // Create the input fields
                 JTextField dateField = new JTextField();
                 JTextField ageField = new JTextField();
-                JTextField phoneNumberField = new JTextField();
+                JTextField phoneField = new JTextField();
                 JTextField emailField = new JTextField();
                 JTextArea complaintArea = new JTextArea();
 
@@ -64,7 +66,7 @@ public class PatientWindowGUI extends JFrame {
                 appointmentFormFrame.add(ageLabel);
                 appointmentFormFrame.add(ageField);
                 appointmentFormFrame.add(phoneNumberLabel);
-                appointmentFormFrame.add(phoneNumberField);
+                appointmentFormFrame.add(phoneField);
                 appointmentFormFrame.add(emailLabel);
                 appointmentFormFrame.add(emailField);
                 appointmentFormFrame.add(complaintLabel);
@@ -75,13 +77,49 @@ public class PatientWindowGUI extends JFrame {
                 submitButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        // Show the confirmation message
-                        JOptionPane.showMessageDialog(null, "Thank you for reaching out to us with your complaint.\nWe believe that all will be well in no time.\nMeanwhile, in no less than 15 minutes, you will receive a call from one of our nurses who will then assign you to a doctor.\nPlease stay by your phone.");
+                        // Get the form inputs
+                        String date = dateField.getText();
+                        String age = ageField.getText();
+                        String phoneNumber = phoneField.getText();
+                        String email = emailField.getText();
+                        String complaint = complaintArea.getText();
 
-                        // Close the appointment form window
-                        appointmentFormFrame.dispose();
+                        // Create a new row with the form data
+                        String[] rowData = {date, age, phoneNumber, email, complaint};
+
+                        String filePath = "C:\\Users\\worth\\IdeaProjects\\hospitalMgmt\\src\\appointments.csv";  // Replace with the actual file path
+
+                        try {
+                            // Create a FileWriter object with append mode
+                            FileWriter csvWriter = new FileWriter(filePath, true);
+
+                            // Create a CSVWriter object
+                            CSVWriter writer = new CSVWriter(csvWriter);
+
+                            // Write the row to the CSV file
+                            writer.writeNext(rowData);
+
+                            // Close the writer
+                            writer.close();
+
+                            // Show a success message
+                            JOptionPane.showMessageDialog(null, "Appointment submitted successfully!");
+
+                            // Clear the form inputs
+                            dateField.setText("");
+                            ageField.setText("");
+                            phoneField.setText("");
+                            emailField.setText("");
+                            complaintArea.setText("");
+                        } catch (IOException ex) {
+                            // Show an error message if there's an exception
+                            JOptionPane.showMessageDialog(null, "Failed to save appointment: " + ex.getMessage());
+                        }
                     }
                 });
+
+
+
 
                 // Display the appointment form window
                 appointmentFormFrame.setVisible(true);
