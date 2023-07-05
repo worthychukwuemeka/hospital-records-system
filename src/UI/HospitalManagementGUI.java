@@ -11,8 +11,6 @@ public class HospitalManagementGUI extends JFrame {
     private final JComboBox<String> userTypeComboBox;
 
     private final JPanel patientLoginPanel;
-    private JLabel patientNameLabel;
-    private JLabel patientPasswordLabel;
     private JTextField patientNameField;
     private JPasswordField patientPasswordField;
     private JButton patientLoginButton;
@@ -20,11 +18,9 @@ public class HospitalManagementGUI extends JFrame {
     private JPanel workerLoginPanel;
     private JLabel workerIdLabel;
     private JLabel workerPasswordLabel;
-    private JLabel workerRoleLabel;
-    private JTextField workerIdField;
+    private final JTextField workerIdField;
     private JPasswordField workerPasswordField;
-    private JComboBox<String> workerRoleComboBox;
-    private JButton workerLoginButton;
+    private final JComboBox<String> workerRoleComboBox;
 
     private String selectedRole;
 
@@ -42,10 +38,12 @@ public class HospitalManagementGUI extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
+
         getContentPane().setBackground(new Color(250, 128, 114)); // The colour I used for the content box's background is Salmon
 
         JPanel headerPanel = new JPanel();
         headerPanel.setBackground(new Color(250, 128, 114)); // The colour I used for the header background is Salmon
+
 
         JLabel headerLabel = new JLabel("<html><div style='text-align: center;'>Welcome to the hospital management system!<br>Please select your role to access your login page:</div></html>");
         headerLabel.setForeground(Color.WHITE);
@@ -60,12 +58,12 @@ public class HospitalManagementGUI extends JFrame {
 
         patientLoginPanel = new JPanel();
         patientLoginPanel.setLayout(new BoxLayout(patientLoginPanel, BoxLayout.Y_AXIS));
-        patientNameLabel = new JLabel("Full Name:");
+        JLabel patientNameLabel = new JLabel("Full Name:");
         patientLoginPanel.add(patientNameLabel);
         patientNameField = new JTextField(20);
         patientNameField.setMaximumSize(new Dimension(200, 30));
         patientLoginPanel.add(patientNameField);
-        patientPasswordLabel = new JLabel("Password:");
+        JLabel patientPasswordLabel = new JLabel("Password:");
         patientLoginPanel.add(patientPasswordLabel);
         patientPasswordField = new JPasswordField(20);
         patientPasswordField.setMaximumSize(new Dimension(200, 30));
@@ -86,12 +84,12 @@ public class HospitalManagementGUI extends JFrame {
         workerPasswordField = new JPasswordField(20);
         workerPasswordField.setMaximumSize(new Dimension(200, 30));
         workerLoginPanel.add(workerPasswordField);
-        workerRoleLabel = new JLabel("Role:");
+        JLabel workerRoleLabel = new JLabel("Role:");
         workerLoginPanel.add(workerRoleLabel);
         workerRoleComboBox = new JComboBox<>(new String[]{"Doctor", "Nurse"});
         workerRoleComboBox.setMaximumSize(new Dimension(200, 30));
         workerLoginPanel.add(workerRoleComboBox);
-        workerLoginButton = new JButton("Login");
+        JButton workerLoginButton = new JButton("Login");
         workerLoginPanel.add(workerLoginButton);
 
         userTypeComboBox.addActionListener(new ActionListener() {
@@ -183,16 +181,17 @@ public class HospitalManagementGUI extends JFrame {
 
     private String getWorkerFullName(String workerId) {
         // This section helps get worker's full name based on worker ID
-        if (workerId.equals("1001")) {
-            return "Jaiyeola Smith";
-        } else if (workerId.equals("1002")) {
-            return "Feranmi Davies";
-        } else if (workerId.equals("1003")) {
-            return "Gbenga Johnson";
-        } else if (workerId.equals("1004")) {
-            return "Whitney Adebayo";
-        } else if (workerId.equals("1005")) {
-            return "Catherine Olukanmi";
+        switch (workerId) {
+            case "1001":
+                return "Jaiyeola Smith";
+            case "1002":
+                return "Feranmi Davies";
+            case "1003":
+                return "Gbenga Johnson";
+            case "1004":
+                return "Whitney Adebayo";
+            case "1005":
+                return "Catherine Olukanmi";
         }
         return "";
     }
